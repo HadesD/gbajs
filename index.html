@@ -2,8 +2,47 @@
 <html lang="en-US">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="manifest" href="./resources/pwa/manifest.json" />
     <title>GBA.js</title>
     <link rel="stylesheet" href="resources/main.css" />
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('./resources/pwa/service-worker.js').then(function() { console.log('Service Worker Registered'); });
+      }
+    </script>
+  </head>
+  <body>
+    <canvas id="screen" width="480" height="320"></canvas>
+    <section id="controls">
+      <div id="preload">
+        <button class="bigbutton" id="select" onclick="document.getElementById('loader').click()">SELECT</button>
+        <input id="loader" type="file" accept=".gba" onchange="run(this.files[0]);">
+        <button onclick="document.getElementById('saveloader').click()">Upload Savegame</button>
+        <input id="saveloader" type="file" onchange="uploadSavedataPending(this.files[0]);">
+      </div>
+      <div id="ingame" class="hidden">
+        <button id="pause" class="bigbutton" onclick="togglePause()">PAUSE</button>
+        <button class="bigbutton" onclick="reset()">RESET</button>
+        <button onclick="gba.downloadSavedata()">Download Savegame</button>
+        <button onclick="screenshot()">Screenshot</button>
+        <label id="pixelated">
+          <input type="checkbox" onchange="setPixelated(this.checked)">
+          <p>Pixelated</p>
+        </label>
+        <div id="sound">
+          <input type="checkbox" checked onchange="gba.audio.masterEnable = this.checked">
+          <p>Sound</p>
+          <input type="range" min="0" max="1" value="1" step="any" onchange="setVolume(this.value)" oninput="setVolume(this.value)">
+        </div>
+        <p id="openDebug" onclick="enableDebug()">Debugger</p>
+      </div>
+    </section>
+    <ul id="links">
+      <li><a href="http://github.com/gba-dev/gbajs/">Fork me on GitHub!</a></li>
+      <li><a href="https://github.com/gba-dev/gbajs/wiki/Compatibility-List">Compatibility list</a></li>
+    </ul>
+    <footer>© 2012 – 2013 <a href="http://endrift.com/">Jeffrey Pfau</a></footer>
+    <footer>© 2018 <a href="http://github.com/GBA-Dev">GBA-Dev Team</a></footer>
     <script src="js/util.js"></script>
     <script src="js/core.js"></script>
     <script src="js/arm.js"></script>
@@ -22,38 +61,5 @@
     <script src="js/gba.js"></script>
     <script src="resources/xhr.js"></script>
     <script src="resources/index.js"></script>
-</head>
-<body>
-  <canvas id="screen" width="480" height="320"></canvas>
-  <section id="controls">
-    <div id="preload">
-      <button class="bigbutton" id="select" onclick="document.getElementById('loader').click()">SELECT</button>
-      <input id="loader" type="file" accept=".gba" onchange="run(this.files[0]);">
-      <button onclick="document.getElementById('saveloader').click()">Upload Savegame</button>
-      <input id="saveloader" type="file" onchange="uploadSavedataPending(this.files[0]);">
-    </div>
-    <div id="ingame" class="hidden">
-      <button id="pause" class="bigbutton" onclick="togglePause()">PAUSE</button>
-      <button class="bigbutton" onclick="reset()">RESET</button>
-      <button onclick="gba.downloadSavedata()">Download Savegame</button>
-      <button onclick="screenshot()">Screenshot</button>
-      <label id="pixelated">
-        <input type="checkbox" onchange="setPixelated(this.checked)">
-        <p>Pixelated</p>
-      </label>
-      <div id="sound">
-        <input type="checkbox" checked onchange="gba.audio.masterEnable = this.checked">
-        <p>Sound</p>
-        <input type="range" min="0" max="1" value="1" step="any" onchange="setVolume(this.value)" oninput="setVolume(this.value)">
-      </div>
-      <p id="openDebug" onclick="enableDebug()">Debugger</p>
-    </div>
-  </section>
-  <ul id="links">
-    <li><a href="http://github.com/gba-dev/gbajs/">Fork me on GitHub!</a></li>
-    <li><a href="https://github.com/gba-dev/gbajs/wiki/Compatibility-List">Compatibility list</a></li>
-  </ul>
-  <footer>© 2012 – 2013 <a href="http://endrift.com/">Jeffrey Pfau</a></footer>
-  <footer>© 2018 <a href="http://github.com/GBA-Dev">GBA-Dev Team</a></footer>
-</body>
+  </body>
 </html>

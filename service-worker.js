@@ -1,7 +1,7 @@
 self.addEventListener('install', function(event) {
   console.log('[ServiceWorker] Install');
   event.waitUntil(
-    caches.open(cacheName).then(function(cache) {
+    caches.open('index').then(function(cache) {
       return cache.addAll(
         [
           './js/arm.js',

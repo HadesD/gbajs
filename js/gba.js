@@ -118,15 +118,60 @@ GameBoyAdvance.prototype.hasRom = function() {
 
 GameBoyAdvance.prototype.loadRomFromFile = function(romFile, callback) {
   var self = this;
+  var zipReader = new JSZip();
 
-  if (!romFile.size)
+  if (romFile.size)
+  {
+    if (romFile.type === 'application/zip')
+    {
+      zipReader.loadAsync(romFile)
+        .then(function(zip){
+          zip.forEach(function(relativePath, zipEntry){
+            if (!zipEntry.name.slice(-4).includes('.gb'))
+            {
+              return;
+            }
+            console.log(zipEntry);
+            var data = zipEntry._data.uncompressedSize;
+            console.log(data.getInt8());
+            var buffer = new Uint8Array(data).buffer;
+            console.log(buffer);
+            var result = self.setRom(buffer);
+            console.log(result);
+            if (callback)
+            {
+              callback(result);
+            }
+          });
+        }, function(e){
+
+        })
+      ;
+    }
+    else
+    {
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var buffer = e.target.result;
+        console.log(buffer);
+        var result = self.setRom(buffer);
+        if (callback)
+        {
+          callback(result);
+        }
+      };
+      reader.readAsArrayBuffer(romFile);
+    }
+  }
+  else
   {
     var xhr = new XMLHttpRequest();
     xhr.open('GET', romFile);
     xhr.responseType = 'arraybuffer';
 
     xhr.onload = function() {
-      var result = self.setRom(xhr.response);
+      var buffer = xhr.response;
+      var result = self.setRom(buffer);
       if (callback)
       {
         callback(result);
@@ -134,18 +179,6 @@ GameBoyAdvance.prototype.loadRomFromFile = function(romFile, callback) {
     };
     xhr.send();
   }
-  else
-  {
-    var reader = new FileReader();
-    reader.onload = function(e) {
-      var result = self.setRom(e.target.result);
-      if (callback) {
-        callback(result);
-      }
-    }
-    reader.readAsArrayBuffer(romFile);
-  }
-
 };
 
 GameBoyAdvance.prototype.reset = function() {

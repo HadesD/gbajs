@@ -15,10 +15,22 @@
   </head>
   <body>
     <canvas id="screen" width="480" height="320"></canvas>
+	<section id="joypad">
+		<button type="button" value="2">SELECT</button>
+		<button type="button" value="3">START</button>
+		<button type="button" value="0">A</button>
+		<button type="button" value="1">B</button>
+		<button type="button" value="9">L</button>
+		<button type="button" value="8">R</button>
+		<button type="button" value="4">Right</button>
+		<button type="button" value="5">Left</button>
+		<button type="button" value="6">Up</button>
+		<button type="button" value="7">Down</button>
+	</section>
     <section id="controls">
       <div id="preload">
         <button class="bigbutton" id="select" onclick="document.getElementById('loader').click()">SELECT</button>
-        <input id="loader" type="file" accept=".gba" onchange="run(this.files[0]);">
+        <input id="loader" type="file" accept=".gb,.gbc,.gba,.zip" onchange="run(this.files[0]);">
         <button onclick="document.getElementById('saveloader').click()">Upload Savegame</button>
         <input id="saveloader" type="file" onchange="uploadSavedataPending(this.files[0]);">
       </div>
@@ -61,6 +73,7 @@
     <script src="js/savedata.js"></script>
     <script src="js/gpio.js"></script>
     <script src="js/gba.js"></script>
+    <script src="resources/jszip.min.js"></script>
     <script src="resources/xhr.js"></script>
     <script src="resources/index.js"></script>
   </body>

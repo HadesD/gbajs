@@ -133,7 +133,6 @@ GameBoyAdvance.prototype.loadRomFromFile = function(romFile, callback) {
             }
             console.log(zipEntry);
             var data = zipEntry._data.uncompressedSize;
-            console.log(data.getInt8());
             var buffer = new Uint8Array(data).buffer;
             console.log(buffer);
             var result = self.setRom(buffer);

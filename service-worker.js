@@ -1,4 +1,4 @@
-self.addEventListener('install', function(e) {
+self.addEventListener('install', function(event) {
   console.log('[ServiceWorker] Install');
   event.waitUntil(
     caches.open(cacheName).then(function(cache) {
@@ -33,7 +33,7 @@ self.addEventListener('install', function(e) {
   );
 });
 
-self.addEventListener('activate', function(e) {
+self.addEventListener('activate', function(event) {
   console.log('[ServiceWorker] Activate');
 });
 

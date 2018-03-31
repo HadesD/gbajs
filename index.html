@@ -1,7 +1,8 @@
 <!Doctype HTML>
 <html lang="en-US">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="manifest" href="./manifest.json" />
     <title>GBA.js</title>
     <link rel="stylesheet" href="resources/main.css" />
@@ -10,6 +11,7 @@
         navigator.serviceWorker.register('./service-worker.js').then(function() { console.log('Service Worker Registered'); });
       }
     </script>
+    <link rel="icon" href="./favicon.ico" />
   </head>
   <body>
     <canvas id="screen" width="480" height="320"></canvas>

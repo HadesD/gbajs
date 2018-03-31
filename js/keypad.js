@@ -77,13 +77,16 @@ GameBoyAdvanceKeypad.prototype.keyboardHandler = function(e) {
   }
 
   toggle = 1 << toggle;
-  if (e.type == "keydown") {
+
+  this.currentDown |= toggle;
+
+  if (e.type == "keydown")
+  {
     this.currentDown &= ~toggle;
-  } else {
-    this.currentDown |= toggle;
   }
 
-  if (this.eatInput) {
+  if (this.eatInput)
+  {
     e.preventDefault();
   }
 };
@@ -129,7 +132,9 @@ GameBoyAdvanceKeypad.prototype.gamepadConnectHandler = function(gamepad) {
 };
 
 GameBoyAdvanceKeypad.prototype.gamepadDisconnectHandler = function(gamepad) {
-  this.gamepads = self.gamepads.filter(function(other) { return other != gamepad });
+  this.gamepads = self.gamepads.filter(function(other) {
+    return other != gamepad;
+  });
 };
 
 GameBoyAdvanceKeypad.prototype.pollGamepads = function() {
@@ -158,27 +163,30 @@ GameBoyAdvanceKeypad.prototype.pollGamepads = function() {
 GameBoyAdvanceKeypad.prototype.joypadHander = function(e) {
   var toggle = 1 << parseInt(e.target.value);
 
+  this.currentDown |= toggle;
+
   if ((e.type === 'mousedown') || (e.type === 'touchstart'))
   {
     this.currentDown &= ~toggle;
   }
-  else
+
+  if (this.eatInput)
   {
-    this.currentDown |= toggle;
+    e.preventDefault();
   }
 };
 
 GameBoyAdvanceKeypad.prototype.registerHandlers = function() {
-  window.addEventListener("keydown", this.keyboardHandler.bind(this), true);
-  window.addEventListener("keyup", this.keyboardHandler.bind(this), true);
+  window.addEventListener('keydown', this.keyboardHandler.bind(this), true);
+  window.addEventListener('keyup', this.keyboardHandler.bind(this), true);
 
-  window.addEventListener("gamepadconnected", this.gamepadConnectHandler.bind(this), true);
-  window.addEventListener("mozgamepadconnected", this.gamepadConnectHandler.bind(this), true);
-  window.addEventListener("webkitgamepadconnected", this.gamepadConnectHandler.bind(this), true);
+  window.addEventListener('gamepadconnected', this.gamepadConnectHandler.bind(this), true);
+  window.addEventListener('mozgamepadconnected', this.gamepadConnectHandler.bind(this), true);
+  window.addEventListener('webkitgamepadconnected', this.gamepadConnectHandler.bind(this), true);
 
-  window.addEventListener("gamepaddisconnected", this.gamepadDisconnectHandler.bind(this), true);
-  window.addEventListener("mozgamepaddisconnected", this.gamepadDisconnectHandler.bind(this), true);
-  window.addEventListener("webkitgamepaddisconnected", this.gamepadDisconnectHandler.bind(this), true);
+  window.addEventListener('gamepaddisconnected', this.gamepadDisconnectHandler.bind(this), true);
+  window.addEventListener('mozgamepaddisconnected', this.gamepadDisconnectHandler.bind(this), true);
+  window.addEventListener('webkitgamepaddisconnected', this.gamepadDisconnectHandler.bind(this), true);
 
   var joypad = document.getElementById('joypad').getElementsByTagName('button');
   for (var i = 0; i < joypad.length; i++)
